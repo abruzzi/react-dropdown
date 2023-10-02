@@ -1,24 +1,20 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Dropdown from "./Dropdown";
+
+const users = [
+  { icon: 'https://i.pravatar.cc/128?u=John', text: 'John Doe', description: 'Software Engineer' },
+  { icon: 'https://i.pravatar.cc/128?u=Jane', text: 'Jane Smith', description: 'Graphic Designer' },
+  { icon: 'https://i.pravatar.cc/128?u=Mike', text: 'Mike Johnson', description: 'Product Manager' },
+  { icon: 'https://i.pravatar.cc/128?u=Emily', text: 'Emily Davis', description: 'UX Designer' },
+  { icon: 'https://i.pravatar.cc/128?u=Robert', text: 'Robert Brown', description: 'Data Analyst' },
+];
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <Dropdown items={users} />
     </div>
   );
 }
