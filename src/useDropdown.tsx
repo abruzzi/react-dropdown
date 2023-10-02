@@ -1,24 +1,22 @@
-import {Item} from "./types";
-import React, {useEffect, useRef, useState} from "react";
+import { Item } from "./types";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 export const useDropdown = (items: Item[]) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
 
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  const selectedItem = useMemo(() => {
+    return items[selectedIndex];
+  }, [items, selectedIndex]);
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     switch (e.key) {
       case "Enter":
       case " ":
-        if (isOpen) {
-          setSelectedItem(items[selectedIndex]);
-          setIsOpen(false);
-        } else {
-          setIsOpen(true);
-        }
+        setIsOpen((isOpen) => !isOpen);
         break;
       case "ArrowDown":
         setSelectedIndex((prevIndex) => {
@@ -55,10 +53,9 @@ export const useDropdown = (items: Item[]) => {
     setIsOpen((isOpen) => !isOpen);
   };
 
-  const selectItem = (item: Item) => {
-    setSelectedItem(item);
+  const updateSelectedIndex = (index: number) => {
+    setSelectedIndex(index);
   };
-
   useEffect(() => {
     dropdownRef.current && dropdownRef.current.focus();
   }, []);
@@ -66,10 +63,10 @@ export const useDropdown = (items: Item[]) => {
   return {
     isOpen,
     toggleDropdown,
-    selectItem,
     dropdownRef,
     selectedIndex,
     selectedItem,
     handleKeyDown,
+    updateSelectedIndex,
   };
 };
