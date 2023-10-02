@@ -8,6 +8,11 @@ export const useDropdown = (items: Item[]) => {
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  const getAriaAttributes = () => ({
+    'aria-expanded': isOpen,
+    'aria-activedescendant': selectedItem ? selectedItem.text : undefined,
+  });
+
   const selectedItem = useMemo(() => {
     return items[selectedIndex];
   }, [items, selectedIndex]);
@@ -68,5 +73,6 @@ export const useDropdown = (items: Item[]) => {
     selectedItem,
     handleKeyDown,
     updateSelectedIndex,
+    getAriaAttributes
   };
 };

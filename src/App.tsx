@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import Dropdown from "./Dropdown";
+import DropdownTailwind from "./DropdownTailwind";
 
 const users = [
   { icon: 'https://i.pravatar.cc/128?u=John', text: 'John Doe', description: 'Software Engineer' },
@@ -14,7 +15,8 @@ const users = [
 function App() {
   return (
     <div className="app">
-      <Dropdown items={users} />
+      {/*<Dropdown items={users} />*/}
+      <DropdownTailwind items={users} />
     </div>
   );
 }
