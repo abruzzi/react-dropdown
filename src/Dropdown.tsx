@@ -1,33 +1,52 @@
-import React, { ChangeEvent, useState } from "react";
+import React from "react";
 import "./Dropdown.css";
+import { DropdownProps } from "./types";
+import { useDropdown } from "./useDropdown";
 
-interface Item {
-  icon: string;
-  text: string;
-  description: string;
-}
-
-interface DropdownProps {
-  items: Item[];
-}
+const Trigger = ({ text }: { text: string }) => {
+  return (
+    <div className="trigger" tabIndex={0}>
+      <span className="selection">{text}</span>
+      <span className="icon material-symbols-outlined">expand_more</span>
+    </div>
+  );
+};
 
 const Dropdown: React.FC<DropdownProps> = ({ items }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
+  const {
+    toggleDropdown,
+    handleKeyDown,
+    dropdownRef,
+    isOpen,
+    selectedItem,
+    selectedIndex,
+    selectItem,
+  } = useDropdown(items);
 
   return (
-    <div className="dropdown" onClick={() => setIsOpen(!isOpen)}>
+    <div
+      className="dropdown"
+      ref={dropdownRef}
+      onClick={toggleDropdown}
+      onKeyDown={handleKeyDown}
+    >
+      <Trigger text={selectedItem ? selectedItem.text : "Select an item..."} />
       <div className="trigger" tabIndex={0}>
-        <span className="selection">{selectedItem ? selectedItem.text : "Select an item..."}</span>
+        <span className="selection">
+          {selectedItem ? selectedItem.text : "Select an item..."}
+        </span>
         <span className="icon material-symbols-outlined">expand_more</span>
       </div>
+
       {isOpen && (
         <div className="dropdown-menu">
           {items.map((item, index) => (
             <div
               key={index}
-              onClick={() => setSelectedItem(item)}
-              className="item-container"
+              onClick={() => selectItem(item)}
+              className={`item-container ${
+                index === selectedIndex ? "highlighted" : ""
+              }`}
             >
               <img src={item.icon} alt={item.text} />
               <div className="details">

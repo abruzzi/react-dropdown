@@ -44,8 +44,12 @@
   cursor: pointer;
 }
 
-.item-container:hover {
+.highlighted {
   background: #f2f2f2;
+}
+
+.item-container {
+  /*background: #f2f2f2;*/
 }
 
 .item-container:last-child {
