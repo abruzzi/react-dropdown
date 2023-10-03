@@ -1,47 +1,44 @@
-import { useDropdown } from "./useDropdown";
 import "tailwindcss/tailwind.css";
-import { Item } from "./types";
+import { useDropdown } from "./useDropdown";
+import { DropdownProps, Item } from "./types";
+import React from "react";
 
-const DropdownUI: React.FC<{ items: Item[] }> = ({ items }) => {
+const DropdownTailwind: React.FC<DropdownProps> = ({ items }) => {
   const {
     isOpen,
     toggleDropdown,
-    dropdownRef,
     selectedIndex,
     handleKeyDown,
     selectedItem,
+    updateSelectedItem,
     getAriaAttributes,
-    updateSelectedIndex,
-  } = useDropdown(items);
+  } = useDropdown<Item>(items);
 
-  console.log(isOpen)
-  console.log(isOpen)
   return (
     <div
       className="relative"
-      ref={dropdownRef}
       onClick={toggleDropdown}
       onKeyDown={handleKeyDown}
       {...getAriaAttributes()}
     >
-      <div className="btn p-2 border rounded min-w-[200px]" tabIndex={0}>
+      <button className="btn p-2 border rounded min-w-[240px]" tabIndex={0}>
         {selectedItem ? selectedItem.text : "Select an item..."}
-      </div>
+      </button>
 
       {isOpen && (
         <ul
-          className="dropdown-menu bg-white shadow-sm rounded mt-2 absolute w-full min-w-[200px]"
+          className="dropdown-menu bg-white shadow-sm rounded mt-2 absolute w-full min-w-[240px]"
           role="listbox"
         >
           {items.map((item, index) => (
             <li
+              key={index}
               role="option"
               aria-selected={index === selectedIndex}
-              key={index}
-              onClick={() => updateSelectedIndex(index)}
+              onClick={() => updateSelectedItem(item)}
               className={`p-2 border-b border-gray-200 flex items-center ${
                 index === selectedIndex ? "bg-gray-100" : ""
-              }`}
+              } hover:bg-blue-100`}
             >
               <img
                 src={item.icon}
@@ -62,4 +59,4 @@ const DropdownUI: React.FC<{ items: Item[] }> = ({ items }) => {
   );
 };
 
-export default DropdownUI;
+export default DropdownTailwind;

@@ -15,11 +15,11 @@ const MenuItem = ({ item }: { item: Item }) => {
 export const DropdownMenu = ({
   items,
   selectedIndex,
-  updateSelectedIndex,
+  updateSelectedItem,
 }: {
   items: Item[];
   selectedIndex: number;
-  updateSelectedIndex: (index: number) => void;
+  updateSelectedItem: (item: Item) => void;
 }) => {
   return (
     <div className="dropdown-menu" role="listbox">
@@ -28,7 +28,7 @@ export const DropdownMenu = ({
           role="option"
           aria-selected={index === selectedIndex}
           key={index}
-          onClick={() => updateSelectedIndex(index)}
+          onClick={() => updateSelectedItem(item)}
           className={`item-container ${
             index === selectedIndex ? "highlighted" : ""
           }`}

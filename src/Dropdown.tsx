@@ -1,6 +1,6 @@
 import React from "react";
 import "./Dropdown.css";
-import { DropdownProps } from "./types";
+import { DropdownProps, Item } from "./types";
 import { useDropdown } from "./useDropdown";
 import { DropdownMenu } from "./DropdownMenu";
 
@@ -17,18 +17,16 @@ const Dropdown: React.FC<DropdownProps> = ({ items }) => {
   const {
     toggleDropdown,
     handleKeyDown,
-    dropdownRef,
     isOpen,
     selectedItem,
     selectedIndex,
-    updateSelectedIndex,
+    updateSelectedItem,
     getAriaAttributes,
-  } = useDropdown(items);
+  } = useDropdown<Item>(items);
 
   return (
     <div
       className="dropdown"
-      ref={dropdownRef}
       onClick={toggleDropdown}
       onKeyDown={handleKeyDown}
       {...getAriaAttributes()}
@@ -38,7 +36,7 @@ const Dropdown: React.FC<DropdownProps> = ({ items }) => {
       {isOpen && (
         <DropdownMenu
           items={items}
-          updateSelectedIndex={updateSelectedIndex}
+          updateSelectedItem={updateSelectedItem}
           selectedIndex={selectedIndex}
         />
       )}
