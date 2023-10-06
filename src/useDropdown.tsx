@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 const getNextIndexOf = (total: number) => (current: number) => {
   if (current === total - 1) {
@@ -22,6 +22,7 @@ export const useDropdown = <T extends { text: string }>(items: T[]) => {
   const [selectedItem, setSelectedItem] = useState<T | null>(null);
 
   const getAriaAttributes = () => ({
+    role: "combobox",
     "aria-expanded": isOpen,
     "aria-activedescendant": selectedItem ? selectedItem.text : undefined,
   });
@@ -29,30 +30,50 @@ export const useDropdown = <T extends { text: string }>(items: T[]) => {
   const getNextIndex = getNextIndexOf(items.length);
   const getPreviousIndex = getPreviousIndexOf(items.length);
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    e.preventDefault();
-    switch (e.key) {
-      case "Enter":
-      case " ":
-        setSelectedItem(items[selectedIndex]);
-        setIsOpen((isOpen) => !isOpen);
-        break;
-      case "ArrowDown":
-        setSelectedIndex(getNextIndex);
-        break;
-      case "ArrowUp":
-        setSelectedIndex(getPreviousIndex);
-        break;
-      case "Home":
-        setSelectedIndex(0);
-        break;
-      case "End":
-        setSelectedIndex(items.length - 1);
-        break;
-      default:
-        break;
+  const dropdownRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      e.preventDefault();
+      switch (e.key) {
+        case "Enter":
+        case " ":
+          setSelectedItem(items[selectedIndex]);
+          setIsOpen((isOpen) => !isOpen);
+          break;
+        case "ArrowDown":
+          setSelectedIndex(getNextIndex);
+          break;
+        case "ArrowUp":
+          setSelectedIndex(getPreviousIndex);
+          break;
+        case "Home":
+          setSelectedIndex(0);
+          break;
+        case "End":
+          setSelectedIndex(items.length - 1);
+          break;
+        case "Escape":
+          setIsOpen(false);
+          if (dropdownRef.current) {
+            dropdownRef.current.blur();
+          }
+          break;
+        default:
+          break;
+      }
+    };
+
+    if (dropdownRef.current) {
+      dropdownRef.current.addEventListener("keydown", handleKeyDown);
     }
-  };
+
+    return () => {
+      if (dropdownRef.current) {
+        dropdownRef.current.removeEventListener("keydown", handleKeyDown);
+      }
+    };
+  }, [dropdownRef, getNextIndex, getPreviousIndex, items, selectedIndex]);
 
   const toggleDropdown = () => setIsOpen((isOpen) => !isOpen);
 
@@ -66,7 +87,7 @@ export const useDropdown = <T extends { text: string }>(items: T[]) => {
     toggleDropdown,
     selectedIndex,
     selectedItem,
-    handleKeyDown,
+    dropdownRef,
     updateSelectedItem,
     getAriaAttributes,
   };

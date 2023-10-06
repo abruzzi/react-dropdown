@@ -1,24 +1,24 @@
 import "tailwindcss/tailwind.css";
 import { useDropdown } from "./useDropdown";
 import { DropdownProps, Item } from "./types";
-import React from "react";
+import React, { RefObject } from "react";
 
 const DropdownTailwind: React.FC<DropdownProps> = ({ items }) => {
   const {
     isOpen,
     toggleDropdown,
     selectedIndex,
-    handleKeyDown,
     selectedItem,
     updateSelectedItem,
     getAriaAttributes,
+    dropdownRef,
   } = useDropdown<Item>(items);
 
   return (
     <div
       className="relative"
       onClick={toggleDropdown}
-      onKeyDown={handleKeyDown}
+      ref={dropdownRef as RefObject<HTMLDivElement>}
       {...getAriaAttributes()}
     >
       <button className="btn p-2 border rounded min-w-[240px]" tabIndex={0}>

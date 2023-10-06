@@ -23,7 +23,7 @@ export const DropdownMenu = ({
 }) => {
   return (
     <div className="dropdown-menu" role="listbox">
-      {items.map((item, index) => (
+      {(items || []).map((item, index) => (
         <div
           role="option"
           aria-selected={index === selectedIndex}

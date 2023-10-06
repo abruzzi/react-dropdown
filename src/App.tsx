@@ -14,7 +14,7 @@ const users = [
 function App() {
   return (
     <div className="app">
-      <Dropdown items={users} />
+      <Dropdown />
       {/*<DropdownTailwind items={users} />*/}
     </div>
   );

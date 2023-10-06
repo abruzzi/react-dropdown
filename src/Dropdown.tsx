@@ -1,45 +1,53 @@
-import React from "react";
+import React, { RefObject } from "react";
 import "./Dropdown.css";
-import { DropdownProps, Item } from "./types";
+import { Item } from "./types";
 import { useDropdown } from "./useDropdown";
 import { DropdownMenu } from "./DropdownMenu";
+import { useService } from "./useService";
+import Loading from "./Loading/Loading";
+import Error from "./Error/Error";
+import { fetchUsers } from "./fetchUsers";
+import { Trigger } from "./Trigger";
 
-const Trigger = ({ text }: { text: string }) => {
-  return (
-    <div className="trigger" tabIndex={0}>
-      <span className="selection">{text}</span>
-      <span className="icon material-symbols-outlined">expand_more</span>
-    </div>
-  );
-};
+const Dropdown = () => {
+  const { data, loading, error } = useService(fetchUsers);
 
-const Dropdown: React.FC<DropdownProps> = ({ items }) => {
   const {
     toggleDropdown,
-    handleKeyDown,
+    dropdownRef,
     isOpen,
     selectedItem,
     selectedIndex,
     updateSelectedItem,
     getAriaAttributes,
-  } = useDropdown<Item>(items);
+  } = useDropdown<Item>(data || []);
+
+  const renderContent = () => {
+    if (loading) return <Loading />;
+    if (error) return <Error />;
+    if (data) {
+      return (
+        <DropdownMenu
+          items={data}
+          updateSelectedItem={updateSelectedItem}
+          selectedIndex={selectedIndex}
+        />
+      );
+    }
+    return null;
+  };
 
   return (
     <div
       className="dropdown"
-      onClick={toggleDropdown}
-      onKeyDown={handleKeyDown}
+      ref={dropdownRef as RefObject<HTMLDivElement>}
       {...getAriaAttributes()}
     >
-      <Trigger text={selectedItem ? selectedItem.text : "Select an item..."} />
-
-      {isOpen && (
-        <DropdownMenu
-          items={items}
-          updateSelectedItem={updateSelectedItem}
-          selectedIndex={selectedIndex}
-        />
-      )}
+      <Trigger
+        onClick={toggleDropdown}
+        text={selectedItem ? selectedItem.text : "Select an item..."}
+      />
+      {isOpen && renderContent()}
     </div>
   );
 };
