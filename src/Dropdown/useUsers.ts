@@ -1,12 +1,10 @@
 import { useService } from "./useService";
-import { Item } from "./types";
+import { Item } from "../types";
 
 const fetchUsers = async () => {
   const response = await fetch(
     "https://gist.githubusercontent.com/abruzzi/3dcb7424d635817b2de9323469dfdca3/raw/72a7ce509ebf3fc19982db1f00d95d8aef80dbc9/users.json"
   );
-
-  console.log(response.ok);
 
   if (!response.ok) {
     const error = await response.json();  // assume the response body has error info

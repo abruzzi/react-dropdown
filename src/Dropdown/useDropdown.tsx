@@ -34,26 +34,31 @@ export const useDropdown = <T extends { text: string }>(items: T[]) => {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      e.preventDefault();
       switch (e.key) {
         case "Enter":
         case " ":
+          e.preventDefault();
           setSelectedItem(items[selectedIndex]);
           setIsOpen((isOpen) => !isOpen);
           break;
         case "ArrowDown":
+          e.preventDefault();
           setSelectedIndex(getNextIndex);
           break;
         case "ArrowUp":
+          e.preventDefault();
           setSelectedIndex(getPreviousIndex);
           break;
         case "Home":
+          e.preventDefault();
           setSelectedIndex(0);
           break;
         case "End":
+          e.preventDefault();
           setSelectedIndex(items.length - 1);
           break;
         case "Escape":
+          e.preventDefault();
           setIsOpen(false);
           if (dropdownRef.current) {
             dropdownRef.current.blur();

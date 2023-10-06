@@ -1,9 +1,13 @@
 import "tailwindcss/tailwind.css";
 import { useDropdown } from "./useDropdown";
-import { DropdownProps, Item } from "./types";
+import { DropdownProps, Item } from "../types";
 import React, { RefObject } from "react";
+import { useService } from "./useService";
+import { fetchUsers } from "./fetchUsers";
 
-const DropdownTailwind: React.FC<DropdownProps> = ({ items }) => {
+const DropdownTailwind = () => {
+  const { data: items, loading, error } = useService<Item[] | null>(fetchUsers);
+
   const {
     isOpen,
     toggleDropdown,
@@ -12,7 +16,7 @@ const DropdownTailwind: React.FC<DropdownProps> = ({ items }) => {
     updateSelectedItem,
     getAriaAttributes,
     dropdownRef,
-  } = useDropdown<Item>(items);
+  } = useDropdown<Item>(items || []);
 
   return (
     <div
@@ -30,7 +34,7 @@ const DropdownTailwind: React.FC<DropdownProps> = ({ items }) => {
           className="dropdown-menu bg-white shadow-sm rounded mt-2 absolute w-full min-w-[240px]"
           role="listbox"
         >
-          {items.map((item, index) => (
+          {(items || []).map((item, index) => (
             <li
               key={index}
               role="option"
