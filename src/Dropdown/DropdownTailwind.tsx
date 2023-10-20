@@ -1,6 +1,6 @@
 import "tailwindcss/tailwind.css";
 import { useDropdown } from "./useDropdown";
-import { DropdownProps, Item } from "../types";
+import { Item } from "../types";
 import React, { RefObject } from "react";
 import { useService } from "./useService";
 import { fetchUsers } from "./fetchUsers";
@@ -44,17 +44,17 @@ const DropdownTailwind = () => {
                 index === selectedIndex ? "bg-gray-100" : ""
               } hover:bg-blue-100`}
             >
-              <img
-                src={item.icon}
-                alt={item.text}
-                className="w-8 h-8 mr-2 rounded border-2 border-red-500"
-              />
               <div className="flex flex-col">
                 <span className="text">{item.text}</span>
                 <span className="text-sm text-gray-500">
                   {item.description}
                 </span>
               </div>
+              <img
+                src={item.icon}
+                alt={item.text}
+                className="w-8 h-8 ml-auto rounded border-2 border-red-500"
+              />
             </li>
           ))}
         </ul>

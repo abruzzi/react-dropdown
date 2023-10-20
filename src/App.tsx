@@ -4,6 +4,7 @@ import Dropdown from "./Dropdown/Dropdown";
 import DropdownTailwind from "./Dropdown/DropdownTailwind";
 import AutoCloseExpandablePanel from "./hoc/AutoCloseExpandablePanel";
 import ExpandablePanel from "./hooks/ExpandablePanel";
+import HeadlessDropdownUsage from "./Dropdown/HeadlessDropdown/HeadlessDropdownUsage";
 
 const users = [
   {
@@ -36,13 +37,14 @@ const users = [
 function App() {
   return (
     <div className="app">
-      <Dropdown />
-      <DropdownTailwind />
+      {/*<Dropdown />*/}
+      <HeadlessDropdownUsage items={users} />
+      {/*<DropdownTailwind />*/}
 
-      <ExpandablePanel
-        heading="Hello darkness my old friend"
-        content={<div>The content</div>}
-      />
+      {/*<ExpandablePanel*/}
+      {/*  heading="Hello darkness my old friend"*/}
+      {/*  content={<div>The content</div>}*/}
+      {/*/>*/}
     </div>
   );
 }

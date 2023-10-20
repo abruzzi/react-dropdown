@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const getNextIndexOf = (total: number) => (current: number) => {
   if (current === total - 1) {
@@ -18,7 +18,7 @@ const getPreviousIndexOf = (total: number) => (current: number) => {
 
 export const useDropdown = <T extends { text: string }>(items: T[]) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [selectedIndex, setSelectedIndex] = useState<number>(-1);
   const [selectedItem, setSelectedItem] = useState<T | null>(null);
 
   const getAriaAttributes = () => ({
@@ -80,11 +80,14 @@ export const useDropdown = <T extends { text: string }>(items: T[]) => {
     };
   }, [dropdownRef, getNextIndex, getPreviousIndex, items, selectedIndex]);
 
-  const toggleDropdown = () => setIsOpen((isOpen) => !isOpen);
+  const toggleDropdown = () => {
+    setIsOpen((isOpen) => !isOpen);
+  }
 
   const updateSelectedItem = (item: T) => {
     setSelectedItem(item);
     setSelectedIndex(items.indexOf(item));
+    setIsOpen(false);
   };
 
   return {
